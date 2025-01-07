@@ -1,0 +1,53 @@
+#include <iostream>
+#include <vector>
+#include <limits>
+using namespace std;
+
+// Function to calculate the maximum profit
+int maxprofit(vector<int>& prices) {
+    if (prices.empty()) return 0;  // No prices, no profit
+    int bestbuy = prices[0], maxprofit = 0;
+    
+    for (int i = 1; i < prices.size(); i++) {
+        // Update maximum profit if selling at current price gives a better profit
+        maxprofit = max(maxprofit, prices[i] - bestbuy);
+        // Update the best buy price
+        bestbuy = min(bestbuy, prices[i]);
+    }
+
+    return maxprofit;
+}
+
+// Function to input stock prices
+void inputPrices(vector<int>& prices) {
+    int price;
+    cout << "Enter the stock prices (Enter -1 to stop): ";
+    while (true) {
+        cin >> price;
+        if (price == -1) break;  // Exit on sentinel value
+        if (price < 0) {
+            cout << "Invalid price. Please enter a non-negative value or -1 to stop: ";
+            continue;
+        }
+        prices.push_back(price);
+    }
+}
+
+int main() {
+    vector<int> prices;
+
+    // Get initial input
+    inputPrices(prices);
+
+    // Ensure there are enough prices to calculate profit
+    while (prices.size() < 2) {
+        cout << "Not enough prices to calculate profit. Please enter at least 2 prices." << endl;
+        inputPrices(prices);
+    }
+
+    // Calculate and display maximum profit
+    int result = maxprofit(prices);
+    cout << "The maximum profit is: " << result << endl;
+
+    return 0;
+}
