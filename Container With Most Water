@@ -1,0 +1,54 @@
+/*Leetcode question no. 11
+  we use here two pointer approach for that the time complexity is O(n).
+  if we use a nested loop it can be O(n^2).
+*/
+
+#include<iostream>
+#include<vector>
+using namespace std;
+
+void input_heights(vector<int>&heights){
+    int height;
+    cout<<"Enter the heights of the edges of container(-1 to exit) - ";
+    while(true){
+        cin>>height;
+        if(height==-1) break;
+        if(height<=0){
+            cout<<"This height does not exist. Enter a valid height - ";
+            continue;
+        }
+        heights.push_back(height);
+    }
+}
+
+int container_with_most_water(vector<int>&heights){
+    int most_water=0;
+    int lh=0, rh=heights.size()-1;
+
+    while(lh<rh){
+        int height=min(heights[lh],heights[rh]);
+        int width=rh-lh;
+        most_water=max(most_water,height*width);
+        if(lh<rh){
+            lh++;
+        } else{
+            rh--;
+        }
+    }
+
+    return most_water;
+}
+
+int main(){
+    
+    vector<int>heights;
+    input_heights(heights);
+
+    while(heights.size()<2){
+        cout<<"Unable to calculate. Please enter two or more heights or -1 to exit."<<endl;
+        input_heights(heights);
+    }
+
+    cout<<"The most water in a container is "<<container_with_most_water(heights);
+    return 0;
+}
