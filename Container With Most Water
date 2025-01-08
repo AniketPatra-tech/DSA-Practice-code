@@ -29,7 +29,7 @@ int container_with_most_water(vector<int>&heights){
         int height=min(heights[lh],heights[rh]);
         int width=rh-lh;
         most_water=max(most_water,height*width);
-        if(lh<rh){
+        if(heights[lh]<heights[rh]){
             lh++;
         } else{
             rh--;
