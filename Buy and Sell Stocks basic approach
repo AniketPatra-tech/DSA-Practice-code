@@ -24,6 +24,7 @@ int maximum_profit(vector<int>&prices,int &best_buy,int &best_sell){
     return maxprofit;
 }
 
+
 void input_prices(vector<int>&prices){
     int price;
     cout<<"Enter the prices(-1 to exit) - ";
@@ -40,6 +41,7 @@ void input_prices(vector<int>&prices){
     }
 }
 
+
 int main(){
     vector<int>prices;
     int best_buy,best_sell;
@@ -53,7 +55,7 @@ int main(){
 
     int max_profit=maximum_profit(prices,best_buy,best_sell);
 
-    if(maximum_profit(prices,best_buy,best_sell)==0){
+    if(max_profit==0){
         cout<<"Based on the stock prices, you will not get any profit.";
     } else{
     cout<<"If you will buy stock at "<<best_buy<<"rs. and sell it at "<<best_sell<<"rs. then you will get the maximum profit of "<<max_profit<<"rs.";
