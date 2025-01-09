@@ -1,54 +1,63 @@
 //Leetcode question no. 121
-#include <iostream>
-#include <vector>
-#include <limits>
+//Show the maximum profit,best buy and best sell
+
+#include<iostream>
+#include<vector>
 using namespace std;
 
-// Function to calculate the maximum profit
-int maxprofit(vector<int>& prices) {
-    if (prices.empty()) return 0;  // No prices, no profit
-    int bestbuy = prices[0], maxprofit = 0;
-    
-    for (int i = 1; i < prices.size(); i++) {
-        // Update maximum profit if selling at current price gives a better profit
-        maxprofit = max(maxprofit, prices[i] - bestbuy);
-        // Update the best buy price
-        bestbuy = min(bestbuy, prices[i]);
+int maximum_profit(vector<int>&prices,int &best_buy,int &best_sell){
+    int maxprofit=0, bestbuy=prices[0];
+
+    for(int i=1;i<prices.size();i++){
+        if(bestbuy<prices[i]){
+            int current_profit=prices[i]-bestbuy;
+            maxprofit=max(maxprofit,current_profit);
+            if(current_profit==maxprofit){
+                best_sell=prices[i];
+                best_buy=bestbuy;
+            }
+        }
+
+        bestbuy=min(bestbuy,prices[i]);
     }
 
     return maxprofit;
 }
 
-// Function to input stock prices
-void inputPrices(vector<int>& prices) {
+void input_prices(vector<int>&prices){
     int price;
-    cout << "Enter the stock prices (Enter -1 to stop): ";
-    while (true) {
-        cin >> price;
-        if (price == -1) break;  // Exit on sentinel value
-        if (price < 0) {
-            cout << "Invalid price. Please enter a non-negative value or -1 to stop: ";
+    cout<<"Enter the prices(-1 to exit) - ";
+    while (true)
+    {
+        cin>>price;
+        if(price==-1) break;
+        if(price<0){
+            cout<<"Invalid price. Please enter a positive price or -1 to exit. - ";
             continue;
         }
+
         prices.push_back(price);
     }
 }
 
-int main() {
-    vector<int> prices;
+int main(){
+    vector<int>prices;
+    int best_buy,best_sell;
 
-    // Get initial input
-    inputPrices(prices);
-
-    // Ensure there are enough prices to calculate profit
-    while (prices.size() < 2) {
-        cout << "Not enough prices to calculate profit. Please enter at least 2 prices." << endl;
-        inputPrices(prices);
+    input_prices(prices);
+    
+    while(prices.size()<2){
+        cout<<"Unable to calculate. Please enter minimum two prices or -1 to direct exit."<<endl;
+        input_prices(prices);
     }
 
-    // Calculate and display maximum profit
-    int result = maxprofit(prices);
-    cout << "The maximum profit is: " << result << endl;
+    int max_profit=maximum_profit(prices,best_buy,best_sell);
+
+    if(maximum_profit(prices,best_buy,best_sell)==0){
+        cout<<"Based on the stock prices, you will not get any profit.";
+    } else{
+    cout<<"If you will buy stock at "<<best_buy<<"rs. and sell it at "<<best_sell<<"rs. then you will get the maximum profit of "<<max_profit<<"rs.";
+    }
 
     return 0;
 }
