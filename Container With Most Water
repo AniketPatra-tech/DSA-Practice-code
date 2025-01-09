@@ -3,52 +3,67 @@
   if we use a nested loop it can be O(n^2).
 */
 
-#include<iostream>
-#include<vector>
+#include <iostream>
+#include <vector>
 using namespace std;
 
-void input_heights(vector<int>&heights){
+void input_heights(vector<int>& heights) {
     int height;
-    cout<<"Enter the heights of the edges of container(-1 to exit) - ";
-    while(true){
-        cin>>height;
-        if(height==-1) break;
-        if(height<=0){
-            cout<<"This height does not exist. Enter a valid height - ";
+    cout << "Enter the heights of the edges of the container (-1 to exit): ";
+    while (true) {
+        cin >> height;
+        if (height == -1) break;
+        if (height <= 0) {
+            cout << "Invalid height. Enter a valid positive height: ";
             continue;
         }
         heights.push_back(height);
     }
 }
 
-int container_with_most_water(vector<int>&heights){
-    int most_water=0;
-    int lh=0, rh=heights.size()-1;
 
-    while(lh<rh){
-        int height=min(heights[lh],heights[rh]);
-        int width=rh-lh;
-        most_water=max(most_water,height*width);
-        if(heights[lh]<heights[rh]){
-            lh++;
-        } else{
-            rh--;
+int container_with_most_water(const vector<int>& heights, int& left_height, int& right_height) {
+    int most_water = 0;
+    int left = 0, right = heights.size() - 1;
+
+    while (left < right) {
+        int height = min(heights[left], heights[right]);
+        int width = right - left;
+        int current_water = height * width;
+
+        if (current_water > most_water) {
+            most_water = current_water;
+            left_height = heights[left];
+            right_height = heights[right];
+        }
+
+        if (heights[left] < heights[right]) {
+            left++;
+        } else {
+            right--;
         }
     }
 
     return most_water;
 }
 
-int main(){
-    
-    vector<int>heights;
+int main() {
+    vector<int> heights;
+    int left_height = 0, right_height = 0;
+
     input_heights(heights);
 
-    while(heights.size()<2){
-        cout<<"Unable to calculate. Please enter two or more heights or -1 to exit."<<endl;
+    while (heights.size() < 2) {
+        cout << "Unable to calculate. Please enter at least two heights or -1 to exit." << endl;
         input_heights(heights);
     }
 
-    cout<<"The most water in a container is "<<container_with_most_water(heights);
+    int max_water = container_with_most_water(heights, left_height, right_height);
+
+    cout << "The container with left height " << left_height 
+         << " units and right height " << right_height 
+         << " units stores the most water of " << max_water << " units." << endl;
+
     return 0;
 }
+
