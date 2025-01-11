@@ -1,0 +1,70 @@
+//Leetcode problems no. 238
+
+#include<iostream>
+#include<vector>
+#include<string>
+#include<sstream>
+using namespace std;
+
+vector<int>product_expect_itself(vector<int>&nums){
+    int n=nums.size();
+    vector<int>ans(n,1);
+
+    //calculate all prefix
+    for(int i=1;i<n;i++){ 
+        ans[i]=ans[i-1]*nums[i-1];
+    }
+
+    //calculate the suffix and then multiply with their prefix
+    int suffix=1;
+    for(int i=n-2;i>=0;i--){
+        suffix*=nums[i+1];
+        ans[i]*=suffix;
+    }
+
+    return ans;
+}
+
+
+void taking_input(vector<int>&nums){
+    string input; //taking input as a string. We don't use here (-1) for exit.
+
+    cout<<"Enter the numbers (type 'exit' to exit) - ";
+    while(true){
+        cin>>input;
+        if(input=="exit") break;
+        stringstream ss(input); //convert all string to integer
+        int num;
+        if(ss>>num){ //if they are valid integer add to vector or show error.
+            nums.push_back(num);
+        } else{
+            cout<<"Invalid input. please enter a number or exit - ";
+        }
+    }
+}
+
+
+int main(){
+
+    vector<int>nums;
+    taking_input(nums);
+    while(nums.size()<2){
+        cout<<"It's not possible with just one element. Please re-enter two or more elements."<<endl; //checking input size
+        taking_input;
+    }
+
+    cout<<"You entered -"<<endl; //original vector
+    for(int val:nums){
+        cout<<val<<" ";
+    }
+
+    cout<<"\n"; //to print the ans at the next line of original
+
+    vector<int>ans=product_expect_itself(nums);
+    cout<<"After calculating all products expect itself -"<<endl; //answer vector
+    for(int val:ans){
+        cout<<val<<" ";
+    }
+
+    return 0;
+}
